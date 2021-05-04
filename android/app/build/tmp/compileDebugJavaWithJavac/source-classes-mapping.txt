@@ -1,0 +1,14 @@
+com/map_practise/BuildConfig.java
+ com.map_practise.BuildConfig
+com/map_practise/MainActivity.java
+ com.map_practise.MainActivity
+com/map_practise/ReactNativeFlipper.java
+ com.map_practise.ReactNativeFlipper
+ com.map_practise.ReactNativeFlipper$1
+ com.map_practise.ReactNativeFlipper$2
+ com.map_practise.ReactNativeFlipper$2$1
+com/map_practise/MainApplication.java
+ com.map_practise.MainApplication
+ com.map_practise.MainApplication$1
+com/facebook/react/PackageList.java
+ com.facebook.react.PackageList
