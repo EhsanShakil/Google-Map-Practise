@@ -1,6 +1,6 @@
 import React, {useState, useRef, useEffect} from 'react';
-import MapView, {Marker} from 'react-native-maps';
-import {StyleSheet, PermissionsAndroid} from 'react-native';
+import MapView, {Marker, Polyline} from 'react-native-maps';
+import {StyleSheet, PermissionsAndroid, StatusBar} from 'react-native';
 import Geolocation from 'react-native-geolocation-service';
 import MapViewDirections from 'react-native-maps-directions';
 
@@ -239,59 +239,77 @@ const Direction = () => {
   const {pickupLocation, dropoffLocation} = state;
   const GOOGLE_MAPS_APIKEY = 'AIzaSyCmECBK4cCTT0c_LM6K9LFpBNpzOc3bF34';
 
-  const callLocation = () => {
-    Geolocation.getCurrentPosition(
-      position => {
-        const currentLongitude = JSON.stringify(position.coords.longitude);
-        const currentLatitude = JSON.stringify(position.coords.latitude);
-        setState({
-          pickupLocation: {
-            latitude: parseFloat(currentLongitude, 10),
-            longitude: parseFloat(currentLatitude, 10),
-          },
-        });
-      },
-      error => alert(error.message),
-      {enableHighAccuracy: true, timeout: 20000},
-    );
-  };
-  useEffect(() => {
-    const requestLocationPermission = async () => {
-      try {
-        const granted = await PermissionsAndroid.request(
-          PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
-          {
-            title: 'Location Access Required',
-            message: 'This App needs to Access your location',
-          },
-        );
-        if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-          callLocation();
-        } else {
-          alert('Permission Denied');
-        }
-      } catch (err) {
-        alert('err', err);
-        console.warn(err);
-      }
-    };
-    requestLocationPermission();
-  }, []);
+  // const callLocation = () => {
+  //   Geolocation.getCurrentPosition(
+  //     position => {
+  //       const currentLongitude = JSON.stringify(position.coords.longitude);
+  //       const currentLatitude = JSON.stringify(position.coords.latitude);
+  //       setState({
+  //         pickupLocation: {
+  //           latitude: parseFloat(currentLongitude, 10),
+  //           longitude: parseFloat(currentLatitude, 10),
+  //         },
+  //       });
+  //     },
+  //     error => alert(error.message),
+  //     {enableHighAccuracy: true, timeout: 20000},
+  //   );
+  // };
+  // useEffect(() => {
+  //   const requestLocationPermission = async () => {
+  //     try {
+  //       const granted = await PermissionsAndroid.request(
+  //         PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+  //         {
+  //           title: 'Location Access Required',
+  //           message: 'This App needs to Access your location',
+  //         },
+  //       );
+  //       if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+  //         callLocation();
+  //       } else {
+  //         alert('Permission Denied');
+  //       }
+  //     } catch (err) {
+  //       alert('err', err);
+  //       console.warn(err);
+  //     }
+  //   };
+  //   requestLocationPermission();
+  // }, []);
   return (
-    <MapView
-      style={styles.map}
-      customMapStyle={mapStyle}
-      initialRegion={pickupLocation}>
-      {/* <Marker coordinate={pickupLocation} /> */}
-      {/* <Marker coordinate={dropoffLocation} /> */}
-      {/* <MapViewDirections
+    <>
+      <MapView
+        style={styles.map}
+        customMapStyle={mapStyle}
+        initialRegion={pickupLocation}>
+        <Marker
+          coordinate={{
+            latitude: pickupLocation.latitude,
+            longitude: pickupLocation.longitude,
+          }}
+        />
+        <Marker
+          coordinate={{
+            latitude: dropoffLocation.latitude,
+            longitude: dropoffLocation.longitude,
+          }}
+        />
+        <Polyline
+          coordinates={[pickupLocation, dropoffLocation]}
+          strokeColor="#000"
+          strokeWidth={6}
+        />
+        {/* <MapViewDirections
         origin={pickupLocation}
         destination={dropoffLocation}
+        s
         apikey={GOOGLE_MAPS_APIKEY}
         strokeWidth={5}
         strokeColor="red"
       /> */}
-    </MapView>
+      </MapView>
+    </>
   );
 };
 
