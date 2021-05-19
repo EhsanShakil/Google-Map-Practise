@@ -1,226 +1,12 @@
 import React, {useState, useRef, useEffect} from 'react';
 import MapView, {Marker, Polyline} from 'react-native-maps';
-import {StyleSheet, PermissionsAndroid, StatusBar} from 'react-native';
-import Geolocation from 'react-native-geolocation-service';
-import MapViewDirections from 'react-native-maps-directions';
-
-const mapStyle = [
-  {
-    elementType: 'geometry',
-    stylers: [
-      {
-        color: '#ebe3cd',
-      },
-    ],
-  },
-  {
-    elementType: 'labels.text.fill',
-    stylers: [
-      {
-        color: '#523735',
-      },
-    ],
-  },
-  {
-    elementType: 'labels.text.stroke',
-    stylers: [
-      {
-        color: '#f5f1e6',
-      },
-    ],
-  },
-  {
-    featureType: 'administrative',
-    elementType: 'geometry.stroke',
-    stylers: [
-      {
-        color: '#c9b2a6',
-      },
-    ],
-  },
-  {
-    featureType: 'administrative.land_parcel',
-    elementType: 'geometry.stroke',
-    stylers: [
-      {
-        color: '#dcd2be',
-      },
-    ],
-  },
-  {
-    featureType: 'administrative.land_parcel',
-    elementType: 'labels.text.fill',
-    stylers: [
-      {
-        color: '#ae9e90',
-      },
-    ],
-  },
-  {
-    featureType: 'landscape.natural',
-    elementType: 'geometry',
-    stylers: [
-      {
-        color: '#dfd2ae',
-      },
-    ],
-  },
-  {
-    featureType: 'poi',
-    elementType: 'geometry',
-    stylers: [
-      {
-        color: '#dfd2ae',
-      },
-    ],
-  },
-  {
-    featureType: 'poi',
-    elementType: 'labels.text.fill',
-    stylers: [
-      {
-        color: '#93817c',
-      },
-    ],
-  },
-  {
-    featureType: 'poi.park',
-    elementType: 'geometry.fill',
-    stylers: [
-      {
-        color: '#a5b076',
-      },
-    ],
-  },
-  {
-    featureType: 'poi.park',
-    elementType: 'labels.text.fill',
-    stylers: [
-      {
-        color: '#447530',
-      },
-    ],
-  },
-  {
-    featureType: 'road',
-    elementType: 'geometry',
-    stylers: [
-      {
-        color: '#f5f1e6',
-      },
-    ],
-  },
-  {
-    featureType: 'road.arterial',
-    elementType: 'geometry',
-    stylers: [
-      {
-        color: '#fdfcf8',
-      },
-    ],
-  },
-  {
-    featureType: 'road.highway',
-    elementType: 'geometry',
-    stylers: [
-      {
-        color: '#f8c967',
-      },
-    ],
-  },
-  {
-    featureType: 'road.highway',
-    elementType: 'geometry.stroke',
-    stylers: [
-      {
-        color: '#e9bc62',
-      },
-    ],
-  },
-  {
-    featureType: 'road.highway.controlled_access',
-    elementType: 'geometry',
-    stylers: [
-      {
-        color: '#e98d58',
-      },
-    ],
-  },
-  {
-    featureType: 'road.highway.controlled_access',
-    elementType: 'geometry.stroke',
-    stylers: [
-      {
-        color: '#db8555',
-      },
-    ],
-  },
-  {
-    featureType: 'road.local',
-    elementType: 'labels.text.fill',
-    stylers: [
-      {
-        color: '#806b63',
-      },
-    ],
-  },
-  {
-    featureType: 'transit.line',
-    elementType: 'geometry',
-    stylers: [
-      {
-        color: '#dfd2ae',
-      },
-    ],
-  },
-  {
-    featureType: 'transit.line',
-    elementType: 'labels.text.fill',
-    stylers: [
-      {
-        color: '#8f7d77',
-      },
-    ],
-  },
-  {
-    featureType: 'transit.line',
-    elementType: 'labels.text.stroke',
-    stylers: [
-      {
-        color: '#ebe3cd',
-      },
-    ],
-  },
-  {
-    featureType: 'transit.station',
-    elementType: 'geometry',
-    stylers: [
-      {
-        color: '#dfd2ae',
-      },
-    ],
-  },
-  {
-    featureType: 'water',
-    elementType: 'geometry.fill',
-    stylers: [
-      {
-        color: '#b9d3c2',
-      },
-    ],
-  },
-  {
-    featureType: 'water',
-    elementType: 'labels.text.fill',
-    stylers: [
-      {
-        color: '#92998d',
-      },
-    ],
-  },
-];
+import {Button, StyleSheet, View} from 'react-native';
+import mapStyle from './mapStyles';
+// import getDirection from './getDirection';
+import getDirections from 'react-native-google-maps-directions';
 
 const Direction = () => {
+  const [coords, setCoords] = useState([]);
   const [state, setState] = useState({
     pickupLocation: {
       latitude: 24.8607,
@@ -238,7 +24,11 @@ const Direction = () => {
 
   const {pickupLocation, dropoffLocation} = state;
   const GOOGLE_MAPS_APIKEY = 'AIzaSyCmECBK4cCTT0c_LM6K9LFpBNpzOc3bF34';
-
+  // useEffect(() => {
+  //   getDirection('24.8607,67.0011', '25.396,68.3578')
+  //     .then(coords => setCoords(coords))
+  //     .catch(err => console.log('Something went wrong', err));
+  // }, []);
   // const callLocation = () => {
   //   Geolocation.getCurrentPosition(
   //     position => {
@@ -289,6 +79,7 @@ const Direction = () => {
             longitude: pickupLocation.longitude,
           }}
         />
+
         <Marker
           coordinate={{
             latitude: dropoffLocation.latitude,
@@ -297,13 +88,14 @@ const Direction = () => {
         />
         <Polyline
           coordinates={[pickupLocation, dropoffLocation]}
-          strokeColor="#000"
+          strokeColor="gray"
           strokeWidth={6}
         />
+
+        {/* {coords.length > 0 && <Polyline coordinates={coords} />} */}
         {/* <MapViewDirections
         origin={pickupLocation}
         destination={dropoffLocation}
-        s
         apikey={GOOGLE_MAPS_APIKEY}
         strokeWidth={5}
         strokeColor="red"
