@@ -4,6 +4,8 @@ import {Button, StyleSheet, View} from 'react-native';
 import mapStyle from './mapStyles';
 // import getDirection from './getDirection';
 import getDirections from 'react-native-google-maps-directions';
+import MapViewDirections from 'react-native-maps-directions';
+import config from './config';
 
 const Direction = () => {
   const [coords, setCoords] = useState([]);
@@ -23,7 +25,7 @@ const Direction = () => {
   });
 
   const {pickupLocation, dropoffLocation} = state;
-  const GOOGLE_MAPS_APIKEY = 'AIzaSyCmECBK4cCTT0c_LM6K9LFpBNpzOc3bF34';
+  const GOOGLE_MAPS_APIKEY = config.API_KEY2;
   // useEffect(() => {
   //   getDirection('24.8607,67.0011', '25.396,68.3578')
   //     .then(coords => setCoords(coords))
@@ -79,27 +81,26 @@ const Direction = () => {
             longitude: pickupLocation.longitude,
           }}
         />
-
         <Marker
           coordinate={{
             latitude: dropoffLocation.latitude,
             longitude: dropoffLocation.longitude,
           }}
         />
-        <Polyline
+        {/* <Polyline
           coordinates={[pickupLocation, dropoffLocation]}
           strokeColor="gray"
           strokeWidth={6}
-        />
+        /> */}
 
         {/* {coords.length > 0 && <Polyline coordinates={coords} />} */}
-        {/* <MapViewDirections
-        origin={pickupLocation}
-        destination={dropoffLocation}
-        apikey={GOOGLE_MAPS_APIKEY}
-        strokeWidth={5}
-        strokeColor="red"
-      /> */}
+        <MapViewDirections
+          origin={pickupLocation}
+          destination={dropoffLocation}
+          apikey={GOOGLE_MAPS_APIKEY}
+          strokeWidth={5}
+          strokeColor="red"
+        />
       </MapView>
     </>
   );

@@ -1,11 +1,11 @@
 import {decode} from '@mapbox/polyline';
+import config from './config';
 
 export default getDirection = async (startLoc, destinationLoc) => {
   console.log('startLoc: ', startLoc);
   console.log('destinationLoc: ', destinationLoc);
-
   try {
-    const KEY = 'AIzaSyD3Qzj6TK9-76bYG1TLpt2IJ5CpXXljHTI';
+    const KEY = config.API_KEY1;
     let resp = await fetch(
       `https://maps.googleapis.com/maps/api/directions/json?origin=${startLoc}&destination=${destinationLoc}&key=${KEY}`,
     );
