@@ -102,3 +102,12 @@ dist
 
 # TernJS port file
 .tern-port
+
+.buckconfig
+.editorconfig
+.eslintrc.js
+.flowconfig
+.gitattributes
+.gitignore
+.prettierrc.js
+.watchmanconfig
